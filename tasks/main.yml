@@ -1,2 +1,6 @@
 ---
-# tasks file for roles/new_role
+- name: Print the system version
+  ansible.builtin.copy:
+    content: What a great role!
+    dest: /tmp/example-config-file
+    mode: '0666'

@@ -1,0 +1,22 @@
+---
+# This is an example playbook to execute Ansible tests.
+- name: Verify
+  hosts: all
+  gather_facts: false
+  connection: community.okd.oc
+  vars:
+    - path: /tmp/example-config-file
+    - content: "What a great role!"
+  tasks:
+    - name: Verify that the file exists
+      ansible.builtin.stat:
+        path: "{{ path }}"
+      register: stat
+      failed_when: 
+        - not stat.stat.exists
+        - stat.stat.mode != '0666'
+    - name: Check File Content
+      ansible.builtin.command: cat {{ path }}
+      changed_when: false
+      register: file_content
+      failed_when: not file_content.stdout == content
